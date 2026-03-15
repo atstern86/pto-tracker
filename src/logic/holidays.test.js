@@ -33,6 +33,18 @@ describe('isFederalHoliday', () => {
     expect(years).toContain('2028')
   })
 
+  it('returns true for Friday after Thanksgiving 2026 (Nov 27)', () => {
+    expect(isFederalHoliday('2026-11-27')).toBe(true)
+  })
+
+  it('returns false for Columbus Day 2026 (not observed by hospital)', () => {
+    expect(isFederalHoliday('2026-10-12')).toBe(false)
+  })
+
+  it('returns false for Veterans Day 2026 (not observed by hospital)', () => {
+    expect(isFederalHoliday('2026-11-11')).toBe(false)
+  })
+
   it('has no dates that fall on a weekend (observed dates are always weekdays)', () => {
     FEDERAL_HOLIDAYS.forEach(d => {
       const day = new Date(d + 'T12:00:00Z').getUTCDay() // 0=Sun, 6=Sat

@@ -1,6 +1,8 @@
-// US Federal Holidays (observed dates) 2025–2028
+// Hospital-observed holidays 2025–2028
+// Based on actual hospital holiday schedule provided by Gaby (2026 confirmed).
+// Differs from federal OPM list: Columbus Day and Veterans Day NOT observed;
+// Friday after Thanksgiving IS observed.
 // When holiday falls on Saturday → observed Friday; on Sunday → observed Monday
-// Source: https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/
 export const FEDERAL_HOLIDAYS = [
   // 2025
   '2025-01-01', // New Year's Day
@@ -10,11 +12,10 @@ export const FEDERAL_HOLIDAYS = [
   '2025-06-19', // Juneteenth
   '2025-07-04', // Independence Day
   '2025-09-01', // Labor Day
-  '2025-10-13', // Columbus Day
-  '2025-11-11', // Veterans Day
   '2025-11-27', // Thanksgiving
+  '2025-11-28', // Friday after Thanksgiving
   '2025-12-25', // Christmas
-  // 2026
+  // 2026 (confirmed from hospital schedule)
   '2026-01-01', // New Year's Day
   '2026-01-19', // MLK Jr. Day
   '2026-02-16', // Presidents' Day
@@ -22,9 +23,8 @@ export const FEDERAL_HOLIDAYS = [
   '2026-06-19', // Juneteenth
   '2026-07-03', // Independence Day (observed, Jul 4 is Sat)
   '2026-09-07', // Labor Day
-  '2026-10-12', // Columbus Day
-  '2026-11-11', // Veterans Day
   '2026-11-26', // Thanksgiving
+  '2026-11-27', // Friday after Thanksgiving
   '2026-12-25', // Christmas
   // 2027
   '2027-01-01', // New Year's Day
@@ -34,9 +34,8 @@ export const FEDERAL_HOLIDAYS = [
   '2027-06-18', // Juneteenth (observed, Jun 19 is Sat)
   '2027-07-05', // Independence Day (observed, Jul 4 is Sun)
   '2027-09-06', // Labor Day
-  '2027-10-11', // Columbus Day
-  '2027-11-11', // Veterans Day
   '2027-11-25', // Thanksgiving
+  '2027-11-26', // Friday after Thanksgiving
   '2027-12-24', // Christmas (observed, Dec 25 is Sat)
   // 2028
   '2027-12-31', // New Year's Day 2028 (observed, Jan 1 2028 is Sat → Fri Dec 31 2027)
@@ -46,9 +45,8 @@ export const FEDERAL_HOLIDAYS = [
   '2028-06-19', // Juneteenth
   '2028-07-04', // Independence Day (Tue)
   '2028-09-04', // Labor Day
-  '2028-10-09', // Columbus Day
-  '2028-11-10', // Veterans Day (observed, Nov 11 is Sat)
   '2028-11-23', // Thanksgiving
+  '2028-11-24', // Friday after Thanksgiving
   '2028-12-25', // Christmas
 ]
 
@@ -57,7 +55,7 @@ const COVERED_YEARS = new Set(['2025', '2026', '2027', '2028'])
 const holidaySet = new Set(FEDERAL_HOLIDAYS)
 
 /**
- * Returns true if the given ISO date string (YYYY-MM-DD) is a federal holiday.
+ * Returns true if the given ISO date string (YYYY-MM-DD) is a hospital-observed holiday.
  * Logs a console warning for dates outside the 2025–2028 coverage range.
  */
 export function isFederalHoliday(isoDate) {
