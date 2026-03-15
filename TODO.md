@@ -13,6 +13,7 @@ See FUTURE_FEATURE_IDEAS.md
 
 ## Done
 
+- [x] Timeline collapsible accrual groups (tap to expand/collapse, with clear affordance)
 - [x] Scaffold Vite + React + Tailwind + Vitest
 - [x] Project docs (CLAUDE.md, OPEN_QUESTIONS.md, FUTURE_FEATURE_IDEAS.md)
 - [x] Federal holiday list 2025–2028 (TDD)

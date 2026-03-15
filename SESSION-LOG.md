@@ -2,6 +2,24 @@
 
 ---
 
+## 2026-03-15 — Timeline Collapsible Groups + Pay Stub Review
+
+**What happened:** Reviewed the app locally, clarified onboarding pay period question using Gaby's actual pay stub, and improved the Timeline view.
+
+**What was built/fixed:**
+- Timeline accrual stretches now collapse into a single summary row (date range, pay period count, total hours, balance after)
+- Tap to expand → shows individual pay period cards; tap again to collapse
+- Clear tap affordance: green-tinted border, rotating `›` chevron, "tap for details" / "tap to collapse" label
+- Pay stub review: confirmed Gaby is on **bi-weekly** pay (every 2 weeks), pay date **03/12/2026** — not semi-monthly (1st & 15th) as the onboarding screenshot suggested
+
+**What's next:**
+- Deploy to Netlify
+- Replace placeholder icons
+- Test on iPhone
+- Get HR details from Gaby (accrual rates, anchor date)
+
+---
+
 ## 2026-03-15 — Full V1 Build Complete
 
 **What happened:** Built the entire PTO Tracker app from scratch across two sessions.
