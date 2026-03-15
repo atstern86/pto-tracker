@@ -9,8 +9,7 @@ export default function InstallPrompt() {
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
     const isStandalone = window.navigator.standalone === true
     if (isIOS && !isStandalone && !isInstallDismissed()) {
-      const timer = setTimeout(() => setShow(true), 2000)
-      return () => clearTimeout(timer)
+      setShow(true)
     }
   }, [])
 
@@ -35,7 +34,7 @@ export default function InstallPrompt() {
           className="font-bold"
           style={{ color: 'var(--color-text)', fontFamily: 'var(--font-display)' }}
         >
-          Add to Home Screen 📲
+          Install First 📲
         </div>
         <button
           onClick={handleDismiss}
@@ -47,7 +46,7 @@ export default function InstallPrompt() {
         </button>
       </div>
       <p className="text-sm mb-3" style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}>
-        Install this app on your iPhone for the best experience — works like a native app, even offline!
+        Add to your home screen first — then set up your profile. Your data only saves inside the installed app, not in Safari.
       </p>
       {/* Diagram */}
       <div
@@ -100,7 +99,7 @@ export default function InstallPrompt() {
         className="w-full mt-4 text-sm underline"
         style={{ color: 'var(--color-muted)' }}
       >
-        Maybe later
+        Skip (your data won't be saved)
       </button>
     </div>
   )

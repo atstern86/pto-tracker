@@ -24,7 +24,12 @@ export default function App() {
   if (isLoading) return null
 
   if (!profile) {
-    return <Onboarding onComplete={(p) => setProfile(p)} />
+    return (
+      <>
+        <Onboarding onComplete={(p) => setProfile(p)} />
+        <InstallPrompt />
+      </>
+    )
   }
 
   return (
