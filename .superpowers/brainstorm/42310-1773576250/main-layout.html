@@ -1,0 +1,97 @@
+<h2>What should the main screen look like?</h2>
+<p class="subtitle">When Gaby opens the app, what does she see first?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f8f0ff; padding: 16px; border-radius: 8px 8px 0 0; font-family: sans-serif;">
+      <!-- Dashboard mockup -->
+      <div style="background: linear-gradient(135deg, #6c3483, #a569bd); border-radius: 14px; padding: 16px; color: white; margin-bottom: 10px;">
+        <div style="font-size: 10px; opacity: 0.8; margin-bottom: 2px;">✈️ YOUR PTO BALANCE</div>
+        <div style="font-size: 22px; font-weight: 800;">12.5 days</div>
+        <div style="font-size: 11px; opacity: 0.7;">93.75 hours</div>
+      </div>
+      <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+        <div style="flex:1; background: white; border-radius: 10px; padding: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+          <div style="font-size: 9px; color: #888; margin-bottom: 3px;">NEXT TRIP</div>
+          <div style="font-size: 12px; font-weight: 600; color: #333;">🏖️ July 4–8</div>
+          <div style="font-size: 10px; color: #a569bd;">–3.5 days</div>
+        </div>
+        <div style="flex:1; background: white; border-radius: 10px; padding: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+          <div style="font-size: 9px; color: #888; margin-bottom: 3px;">NEXT ACCRUAL</div>
+          <div style="font-size: 12px; font-weight: 600; color: #333;">📅 Mar 21</div>
+          <div style="font-size: 10px; color: #27ae60;">+3.75 hrs</div>
+        </div>
+      </div>
+      <div style="background: white; border-radius: 10px; padding: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+        <div style="font-size: 9px; color: #888; margin-bottom: 6px;">TIMELINE SNAPSHOT</div>
+        <div style="display:flex; align-items:center; gap:4px; font-size:10px; color:#555;">
+          <span>Now</span><div style="flex:1;height:3px;background:#a569bd;border-radius:2px;"></div>
+          <span style="color:#e74c3c;">July</span><div style="flex:1;height:3px;background:#f0e6ff;border-radius:2px;"></div>
+          <span>Aug</span><div style="flex:1;height:3px;background:#a569bd;border-radius:2px;"></div>
+          <span>Sep</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Dashboard First</h3>
+      <p>Shows balance, next trip, next accrual, and a mini-timeline all on one screen. Information-rich at a glance.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f8f0ff; padding: 16px; border-radius: 8px 8px 0 0; font-family: sans-serif;">
+      <!-- Big balance + CTA mockup -->
+      <div style="text-align: center; padding: 10px 0 14px;">
+        <div style="font-size: 10px; color: #a569bd; font-weight: 600; letter-spacing: 1px; margin-bottom: 4px;">YOUR PTO BALANCE ✈️</div>
+        <div style="font-size: 44px; font-weight: 900; color: #6c3483; line-height: 1;">12.5</div>
+        <div style="font-size: 14px; color: #888;">days &nbsp;·&nbsp; 93.75 hours</div>
+      </div>
+      <div style="background: linear-gradient(135deg, #6c3483, #a569bd); border-radius: 14px; padding: 12px; color: white; text-align: center; margin-bottom: 10px; font-size: 13px; font-weight: 600;">
+        + Plan a Trip
+      </div>
+      <div style="background: white; border-radius: 10px; padding: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+        <div style="font-size: 9px; color: #888; margin-bottom: 6px;">PLANNED TRIPS</div>
+        <div style="font-size: 11px; color: #555;">🏖️ July 4–8 &nbsp; <span style="color:#a569bd;">–3.5 days</span></div>
+        <div style="font-size: 11px; color: #555; margin-top: 4px;">🏔️ Aug 12–16 &nbsp; <span style="color:#a569bd;">–5 days</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Balance Hero</h3>
+      <p>Giant balance front and center, big "Plan a Trip" button, scrollable list of planned trips below. Simple and focused.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f8f0ff; padding: 16px; border-radius: 8px 8px 0 0; font-family: sans-serif;">
+      <!-- Timeline-first mockup -->
+      <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 8px;">
+        <div style="font-size: 9px; color: #888; margin-bottom: 8px;">YOUR VACATION TIMELINE</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="display:flex; align-items:center; gap:8px; font-size:10px;">
+            <span style="color:#888; width:36px;">Mar 15</span>
+            <div style="flex:1; height:20px; background:#f0e6ff; border-radius:4px; display:flex; align-items:center; padding:0 8px; color:#6c3483; font-weight:600;">Today · 12.5 days</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:10px;">
+            <span style="color:#888; width:36px;">Apr 4</span>
+            <div style="flex:1; height:20px; background:#e8f8f0; border-radius:4px; display:flex; align-items:center; padding:0 8px; color:#27ae60;">+3.75 hrs accrual</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:10px;">
+            <span style="color:#888; width:36px;">Jul 4</span>
+            <div style="flex:1; height:20px; background:#fde8e8; border-radius:4px; display:flex; align-items:center; padding:0 8px; color:#e74c3c;">🏖️ Trip –3.5 days</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:10px;">
+            <span style="color:#888; width:36px;">Aug 12</span>
+            <div style="flex:1; height:20px; background:#fde8e8; border-radius:4px; display:flex; align-items:center; padding:0 8px; color:#e74c3c;">🏔️ Trip –5 days</div>
+          </div>
+        </div>
+      </div>
+      <div style="background: linear-gradient(135deg, #6c3483, #a569bd); border-radius: 10px; padding: 10px; color: white; text-align: center; font-size: 12px;">Balance after all trips: <strong>6.2 days</strong></div>
+    </div>
+    <div class="card-body">
+      <h3>C — Timeline First</h3>
+      <p>A scrollable visual timeline is the main feature — accruals and trips shown chronologically. Balance always visible at bottom.</p>
+    </div>
+  </div>
+
+</div>
