@@ -39,7 +39,11 @@ export default function App() {
           />
         )}
         {activeTab === 'timeline' && (
-          <Timeline profile={profile} trips={trips} />
+          <Timeline
+            profile={profile}
+            trips={trips}
+            onPlanTrip={() => { setActiveTab('home'); setShowPlanTrip(true) }}
+          />
         )}
         {activeTab === 'settings' && (
           <Settings

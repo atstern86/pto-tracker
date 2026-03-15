@@ -3,7 +3,7 @@ import { format, parseISO } from 'date-fns'
 import { buildTimeline } from '../logic/calculations'
 import BalanceDisplay from '../components/BalanceDisplay'
 
-export default function Timeline({ profile, trips }) {
+export default function Timeline({ profile, trips, onPlanTrip }) {
   const events = useMemo(() => buildTimeline(profile, trips), [profile, trips])
 
   // Empty state: show when no trips planned (buildTimeline always has accrual events)
@@ -17,9 +17,17 @@ export default function Timeline({ profile, trips }) {
         >
           Your adventure timeline starts here
         </p>
-        <p className="text-sm mt-2" style={{ color: 'var(--color-muted)' }}>
-          Go to Home and plan your first trip!
-        </p>
+        <button
+          onClick={onPlanTrip}
+          className="mt-4 font-bold py-3 px-6 rounded-2xl text-sm transition-all active:scale-95"
+          style={{
+            background: 'linear-gradient(135deg, var(--color-primary), #9333ea)',
+            color: 'white',
+            fontFamily: 'var(--font-body)',
+          }}
+        >
+          + Plan a Trip ✈️
+        </button>
       </div>
     )
   }
@@ -87,12 +95,17 @@ export default function Timeline({ profile, trips }) {
                       +{event.hours.toFixed(2)} hrs accrued
                     </div>
                   ) : (
-                    <div
-                      className="font-medium text-sm mt-0.5"
-                      style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-body)' }}
-                    >
-                      ✈️ {event.name}
-                    </div>
+                    <>
+                      <div
+                        className="font-medium text-sm mt-0.5"
+                        style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-body)' }}
+                      >
+                        ✈️ {event.name}
+                      </div>
+                      <div className="text-xs mt-0.5" style={{ color: 'var(--color-danger)' }}>
+                        –{event.hours.toFixed(2)} hrs
+                      </div>
+                    </>
                   )}
                 </div>
                 <div className="text-right">
