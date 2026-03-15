@@ -1,6 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
-  theme: { extend: {} },
+  theme: {
+    extend: {
+      keyframes: {
+        'slide-up': {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        'card-entrance': {
+          '0%': { transform: 'translateY(16px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+      },
+      animation: {
+        'slide-up': 'slide-up 0.3s ease-out',
+        'card': 'card-entrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both',
+      },
+    },
+  },
   plugins: [],
 }
