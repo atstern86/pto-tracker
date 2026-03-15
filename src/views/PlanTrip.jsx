@@ -52,7 +52,7 @@ export default function PlanTrip({ profile, trips, onAdd, onClose }) {
         <h2 className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-display)' }}>
           Plan a Trip ✈️
         </h2>
-        <button onClick={onClose} className="text-white/70 text-sm font-medium">
+        <button onClick={onClose} className="text-white/70 text-sm font-medium px-3 py-2">
           ✕ Cancel
         </button>
       </div>
@@ -138,10 +138,14 @@ export default function PlanTrip({ profile, trips, onAdd, onClose }) {
         )}
       </div>
 
-      {/* Add button */}
+      {/* Add button — pb accounts for iOS safe area (home indicator) */}
       <div
-        className="px-6 pb-8 pt-4"
-        style={{ background: 'var(--color-surface)', borderTop: '1px solid var(--color-card-border)' }}
+        className="px-6 pt-4"
+        style={{
+          background: 'var(--color-surface)',
+          borderTop: '1px solid var(--color-card-border)',
+          paddingBottom: 'max(2rem, env(safe-area-inset-bottom))',
+        }}
       >
         <button
           onClick={handleAdd}
