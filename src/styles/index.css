@@ -1,16 +1,88 @@
+/*
+ * Design System — "Golden Hour Wanderlust"
+ *
+ * Aesthetic: warm travel-poster energy. Deep indigo hero fading to amber gold.
+ * Feels like a sunset over somewhere beautiful — adventurous, personal, not corporate.
+ *
+ * Fonts:
+ *   Display — Fraunces (quirky variable serif, optical-size aware; vintage travel poster vibes)
+ *   Body    — DM Sans (clean, friendly, highly legible on mobile)
+ *
+ * Colors:
+ *   Primary purple-indigo hero gradient → warm amber CTA
+ *   Card surfaces use warm cream (#fffbf5) not cold white
+ *   Trip cards accented with amber left border
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --color-primary: #7c3aed;
-  --color-primary-dark: #5b21b6;
+  --color-primary: #6d28d9;
+  --color-primary-dark: #4c1d95;
   --color-primary-light: #ede9fe;
-  --color-accent: #f59e0b;
-  --color-success: #10b981;
-  --color-danger: #ef4444;
-  --color-bg: #faf5ff;
-  --color-surface: #ffffff;
-  --color-text: #1f2937;
-  --color-muted: #6b7280;
+  --color-accent: #d97706;
+  --color-accent-light: #fef3c7;
+  --color-success: #059669;
+  --color-danger: #dc2626;
+  --color-bg: #fdf8f0;
+  --color-surface: #fffbf5;
+  --color-text: #1c1917;
+  --color-muted: #78716c;
+  --color-card-border: #f5ede0;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Hero balance number — slide-up reveal on mount */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Trip cards staggered entrance */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUpFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-card {
+  animation: cardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Grain texture overlay for hero warmth */
+.hero-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
 }
