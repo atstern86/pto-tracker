@@ -37,9 +37,12 @@ function TextInput({ value, onChange, ...props }) {
   )
 }
 
+const today = format(new Date(), 'yyyy-MM-dd')
+
 export default function Settings({ profile, trips, onProfileChange, onTripsChange, onReset }) {
   const [form, setForm] = useState({ ...profile, schedule: { ...profile.schedule } })
   const [saved, setSaved] = useState(false)
+  const [savedBalanceDate, setSavedBalanceDate] = useState(null)
 
   function set(key, value) {
     setForm(f => ({ ...f, [key]: value }))
@@ -52,6 +55,10 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
   }
 
   function handleSave() {
+    if (!form.name.trim()) {
+      alert('Please enter your name.')
+      return
+    }
     const bal = parseFloat(form.currentBalanceHours)
     if (isNaN(bal) || bal < 0 || bal > 9999) {
       alert('Balance must be between 0 and 9999 hours.')
@@ -61,6 +68,16 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
     if (isNaN(rate) || rate <= 0 || rate > 99) {
       alert('Accrual rate must be between 0.01 and 99 hours.')
       return
+    }
+    if (form.payPeriodFrequency === 'biweekly') {
+      if (!form.payPeriodAnchorDate) {
+        alert('Please enter a recent pay date.')
+        return
+      }
+      if (form.payPeriodAnchorDate > today) {
+        alert('Anchor date must be today or in the past.')
+        return
+      }
     }
     if (form.employmentType === 'part-time') {
       const hours = DAYS.map(d => parseFloat(form.schedule[d]) || 0)
@@ -77,8 +94,12 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
     const updated = { ...form }
 
     // If balance changed, update balanceAsOfDate to today
-    if (parseFloat(form.currentBalanceHours) !== parseFloat(profile.currentBalanceHours)) {
-      updated.balanceAsOfDate = format(new Date(), 'yyyy-MM-dd')
+    const balanceActuallyChanged = parseFloat(form.currentBalanceHours) !== parseFloat(profile.currentBalanceHours)
+    if (balanceActuallyChanged) {
+      updated.balanceAsOfDate = today
+      setSavedBalanceDate(format(new Date(), 'MMM d'))
+    } else {
+      setSavedBalanceDate(null)
     }
 
     // Normalize numbers
@@ -90,6 +111,8 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
       const normalized = {}
       DAYS.forEach(d => { normalized[d] = parseFloat(form.schedule[d]) || 0 })
       updated.schedule = normalized
+    } else {
+      updated.schedule = {}
     }
 
     saveProfile(updated)
@@ -110,7 +133,7 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
     }
   }
 
-  const balanceChanged = String(form.currentBalanceHours) !== String(profile.currentBalanceHours)
+  const balanceChanged = parseFloat(form.currentBalanceHours) !== parseFloat(profile.currentBalanceHours)
 
   return (
     <div className="min-h-screen px-6 pt-12 pb-8" style={{ background: 'var(--color-bg)' }}>
@@ -137,6 +160,22 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
           <TextInput value={form.name} onChange={e => set('name', e.target.value)} />
         </Field>
 
+        <Field label="Employment type">
+          <select
+            value={form.employmentType}
+            onChange={e => set('employmentType', e.target.value)}
+            className="w-full rounded-xl px-4 py-3 text-base focus:outline-none"
+            style={{
+              border: '1.5px solid var(--color-card-border, #f3f0ff)',
+              fontFamily: 'var(--font-body)',
+              background: 'white',
+            }}
+          >
+            <option value="full-time">Full-time (37.5 hrs/week)</option>
+            <option value="part-time">Part-time (custom schedule)</option>
+          </select>
+        </Field>
+
         <Field label="Current PTO balance (hours)">
           <TextInput
             type="number"
@@ -146,9 +185,14 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
             value={form.currentBalanceHours}
             onChange={e => set('currentBalanceHours', e.target.value)}
           />
-          {balanceChanged && (
+          {balanceChanged && !saved && (
             <p className="text-xs mt-1" style={{ color: 'var(--color-muted)' }}>
               ℹ️ Balance date will update to today when saved
+            </p>
+          )}
+          {savedBalanceDate && (
+            <p className="text-xs mt-1" style={{ color: 'var(--color-success)' }}>
+              ✓ Balance updated as of today, {savedBalanceDate}
             </p>
           )}
         </Field>
