@@ -32,4 +32,12 @@ describe('isFederalHoliday', () => {
     expect(years).toContain('2027')
     expect(years).toContain('2028')
   })
+
+  it('has no dates that fall on a weekend (observed dates are always weekdays)', () => {
+    FEDERAL_HOLIDAYS.forEach(d => {
+      const day = new Date(d + 'T12:00:00Z').getUTCDay() // 0=Sun, 6=Sat
+      expect(day, `${d} should not be a weekend`).not.toBe(0)
+      expect(day, `${d} should not be a weekend`).not.toBe(6)
+    })
+  })
 })

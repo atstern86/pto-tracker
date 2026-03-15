@@ -39,7 +39,7 @@ export const FEDERAL_HOLIDAYS = [
   '2027-11-25', // Thanksgiving
   '2027-12-24', // Christmas (observed, Dec 25 is Sat)
   // 2028
-  '2028-01-02', // New Year's Day (observed, Jan 1 is Sun)
+  '2027-12-31', // New Year's Day 2028 (observed, Jan 1 2028 is Sat → Fri Dec 31 2027)
   '2028-01-17', // MLK Jr. Day
   '2028-02-21', // Presidents' Day
   '2028-05-29', // Memorial Day
