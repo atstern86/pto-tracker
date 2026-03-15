@@ -25,6 +25,8 @@
 - New Year's 2028 had wrong observed date (Jan 2 → Dec 31 2027) → fixed
 - Settings was missing anchor date validation (must be past/today) and employment type editor → fixed
 
+**Late session update:** Alex provided the actual hospital holiday schedule for 2026. Updated `src/logic/holidays.js` for all 4 years: added Friday after Thanksgiving, removed Columbus Day and Veterans Day (not observed by hospital). 51 tests now passing.
+
 **What's next:**
 - Deploy to Netlify (see Task 13 in CLAUDE.md + netlify.toml)
 - Share URL with Gaby and her 5 colleagues
