@@ -75,6 +75,13 @@ body {
   animation: cardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-up,
+  .animate-card {
+    animation: none;
+  }
+}
+
 /* Grain texture overlay for hero warmth */
 .hero-grain::after {
   content: '';

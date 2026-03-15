@@ -78,7 +78,7 @@ export default function TripCard({ trip, profile, allTrips, onDelete, index = 0 
 
             <button
               onClick={() => onDelete(trip.id)}
-              className="rounded-full w-7 h-7 flex items-center justify-center transition-colors"
+              className="rounded-full w-10 h-10 flex items-center justify-center transition-colors"
               style={{ color: 'var(--color-muted)' }}
               onMouseEnter={e => {
                 e.currentTarget.style.background = '#fee2e2'
@@ -88,7 +88,7 @@ export default function TripCard({ trip, profile, allTrips, onDelete, index = 0 
                 e.currentTarget.style.background = 'transparent'
                 e.currentTarget.style.color = 'var(--color-muted)'
               }}
-              aria-label="Delete trip"
+              aria-label={`Delete ${tripName}`}
             >
               ✕
             </button>
