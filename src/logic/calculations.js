@@ -106,9 +106,12 @@ export function getProjectedBalance(targetDate, profile, trips) {
 export function buildTimeline(profile, trips) {
   const today = format(new Date(), 'yyyy-MM-dd')
   const endDate = format(addMonths(new Date(), 18), 'yyyy-MM-dd')
+  // Start forward events from tomorrow — today's accrual (if today is a payday) is
+  // already baked into the seed balance below, so starting from today would double-count it.
+  const tomorrow = format(addDays(new Date(), 1), 'yyyy-MM-dd')
 
   // Build accrual events
-  const accrualDates = getPayPeriodDates(today, endDate, profile)
+  const accrualDates = getPayPeriodDates(tomorrow, endDate, profile)
   const accrualEvents = accrualDates.map(date => ({
     type: 'accrual',
     date,

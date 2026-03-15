@@ -1,10 +1,12 @@
 import { useMemo } from 'react'
 import { format, parseISO } from 'date-fns'
-import { buildTimeline } from '../logic/calculations'
+import { buildTimeline, getProjectedBalance } from '../logic/calculations'
 import BalanceDisplay from '../components/BalanceDisplay'
 
 export default function Timeline({ profile, trips, onPlanTrip }) {
   const events = useMemo(() => buildTimeline(profile, trips), [profile, trips])
+  const today = format(new Date(), 'yyyy-MM-dd')
+  const todayBalance = useMemo(() => getProjectedBalance(today, profile, trips), [today, profile, trips])
 
   // Empty state: show when no trips planned (buildTimeline always has accrual events)
   if (trips.length === 0) {
@@ -51,7 +53,7 @@ export default function Timeline({ profile, trips, onPlanTrip }) {
           Today
         </div>
         <div className="ml-auto">
-          <BalanceDisplay hours={profile.currentBalanceHours} profile={profile} />
+          <BalanceDisplay hours={todayBalance} profile={profile} />
         </div>
       </div>
 

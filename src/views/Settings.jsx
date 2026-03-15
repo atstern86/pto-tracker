@@ -106,6 +106,11 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
     updated.currentBalanceHours = bal
     updated.accrualRateHours = rate
 
+    // Clear anchor date when switching to semi-monthly (it's not used)
+    if (updated.payPeriodFrequency === 'semi-monthly') {
+      updated.payPeriodAnchorDate = null
+    }
+
     // Normalize part-time schedule
     if (updated.employmentType === 'part-time') {
       const normalized = {}
