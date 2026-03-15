@@ -12,7 +12,9 @@ export default function Home({ profile, trips, onPlanTrip, onTripsChange }) {
     [today, profile, trips]
   )
 
-  const upcomingTrips = trips.filter(t => t.endDate >= today)
+  const upcomingTrips = trips
+    .filter(t => t.endDate >= today)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate))
 
   function handleDelete(tripId) {
     const updated = trips.filter(t => t.id !== tripId)
