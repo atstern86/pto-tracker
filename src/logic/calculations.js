@@ -12,6 +12,7 @@ export function getDayKey(isoDate) {
 export function getDaysDenominator(profile) {
   if (profile.employmentType === 'full-time') return 7.5
   const weeklyHours = Object.values(profile.schedule).reduce((sum, h) => sum + h, 0)
+  if (weeklyHours === 0) return 7.5 // fallback to standard day length if schedule is empty
   return weeklyHours / 5
 }
 

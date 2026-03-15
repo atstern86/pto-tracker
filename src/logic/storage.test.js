@@ -1,4 +1,4 @@
-import { loadProfile, saveProfile, loadTrips, saveTrips, clearAll } from './storage'
+import { loadProfile, saveProfile, loadTrips, saveTrips, clearAll, isInstallDismissed, dismissInstall } from './storage'
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -41,5 +41,22 @@ describe('storage', () => {
     clearAll()
     expect(loadProfile()).toBeNull()
     expect(loadTrips()).toEqual([])
+  })
+
+  it('dismissInstall marks install as dismissed', () => {
+    expect(isInstallDismissed()).toBe(false)
+    dismissInstall()
+    expect(isInstallDismissed()).toBe(true)
+  })
+
+  it('isInstallDismissed returns false when nothing saved', () => {
+    expect(isInstallDismissed()).toBe(false)
+  })
+
+  it('clearAll also removes install dismissed flag', () => {
+    dismissInstall()
+    expect(isInstallDismissed()).toBe(true)
+    clearAll()
+    expect(isInstallDismissed()).toBe(false)
   })
 })
