@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { loadProfile, loadTrips } from './logic/storage'
+import { loadProfile, loadTrips, saveTrips } from './logic/storage'
 import Onboarding from './views/Onboarding'
 import Home from './views/Home'
 import Timeline from './views/Timeline'
@@ -50,6 +50,11 @@ export default function App() {
             trips={trips}
             onPlanTrip={() => { setActiveTab('home'); setShowPlanTrip(true) }}
             onEditTrip={(trip) => setEditingTrip(trip)}
+            onDeleteTrip={(id) => {
+              const updated = trips.filter(t => t.id !== id)
+              saveTrips(updated)
+              setTrips(updated)
+            }}
           />
         )}
         {activeTab === 'settings' && (

@@ -34,7 +34,7 @@ function groupIntoSegments(events) {
   return segments
 }
 
-export default function Timeline({ profile, trips, onPlanTrip, onEditTrip }) {
+export default function Timeline({ profile, trips, onPlanTrip, onEditTrip, onDeleteTrip }) {
   const events = useMemo(() => buildTimeline(profile, trips), [profile, trips])
   const segments = useMemo(() => groupIntoSegments(events), [events])
   const today = format(new Date(), 'yyyy-MM-dd')
@@ -150,13 +150,22 @@ export default function Timeline({ profile, trips, onPlanTrip, onEditTrip }) {
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-2">
-                      <button
-                        onClick={() => onEditTrip({ id: segment.id, name: segment.name, startDate: segment.date, endDate: segment.endDate })}
-                        className="text-xs px-2 py-1 rounded-lg font-medium"
-                        style={{ background: 'var(--color-primary-light, #ede9fe)', color: 'var(--color-primary)' }}
-                      >
-                        ✏️ Edit
-                      </button>
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => onEditTrip({ id: segment.id, name: segment.name, startDate: segment.date, endDate: segment.endDate })}
+                          className="text-xs px-2 py-1 rounded-lg font-medium"
+                          style={{ background: 'var(--color-primary-light, #ede9fe)', color: 'var(--color-primary)' }}
+                        >
+                          ✏️ Edit
+                        </button>
+                        <button
+                          onClick={() => onDeleteTrip(segment.id)}
+                          className="text-xs px-2 py-1 rounded-lg font-medium"
+                          style={{ background: '#fff1f2', color: 'var(--color-danger)' }}
+                        >
+                          🗑️
+                        </button>
+                      </div>
                       <div className="text-right">
                         <div className="text-xs mb-0.5" style={{ color: 'var(--color-muted)' }}>
                           Balance after
