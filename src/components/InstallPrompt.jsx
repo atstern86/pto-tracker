@@ -26,9 +26,10 @@ export default function InstallPrompt() {
 
   return (
     <div
-      className="fixed left-4 right-4 z-40 rounded-2xl shadow-xl p-5 animate-slide-up"
+      className="fixed left-4 right-4 z-40 rounded-2xl shadow-xl p-5 animate-slide-up overflow-y-auto"
       style={{
         bottom: 'calc(5rem + env(safe-area-inset-bottom))',
+        maxHeight: 'calc(100vh - 8rem)',
         background: 'var(--color-surface)',
         border: '1px solid #e9d5ff',
       }}
@@ -73,7 +74,7 @@ export default function InstallPrompt() {
       {/* Real iOS screenshot with highlight overlay */}
       <div className="rounded-2xl overflow-hidden" style={{ position: 'relative' }}>
         <img
-          src="/icons/screenshot share.jpg"
+          src="/icons/share-sheet-cropped.jpg"
           alt="iOS share sheet"
           style={{ width: '100%', display: 'block' }}
         />
@@ -81,7 +82,7 @@ export default function InstallPrompt() {
         <div
           style={{
             position: 'absolute',
-            top: '89.5%',
+            top: '78%',
             bottom: '1%',
             left: '2%',
             right: '2%',
