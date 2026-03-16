@@ -22,14 +22,14 @@ function DayContent({ date }) {
   )
 }
 
-export default function CalendarPicker({ selected, onSelect }) {
+export default function CalendarPicker({ selected, onSelect, defaultMonth }) {
   return (
     <div className="rdp-custom">
       <DayPicker
         mode="range"
         selected={selected}
         onSelect={onSelect}
-        fromDate={new Date()}
+        defaultMonth={defaultMonth ?? (selected?.from ?? new Date())}
         numberOfMonths={1}
         modifiers={{ holiday: holidayDates }}
         modifiersStyles={{

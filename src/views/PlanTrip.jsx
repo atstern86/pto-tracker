@@ -53,9 +53,11 @@ export default function PlanTrip({ profile, trips, editTrip = null, onAdd, onEdi
     <div className="fixed inset-0 z-50 flex flex-col" style={{ background: 'var(--color-bg)' }}>
       {/* Header */}
       <div
-        className="px-6 py-5 flex items-center justify-between"
+        className="px-6 flex items-center justify-between"
         style={{
           background: 'linear-gradient(135deg, #6c3483 0%, #7c3aed 60%, #a855f7 100%)',
+          paddingTop: 'calc(1.25rem + env(safe-area-inset-top))',
+          paddingBottom: '1.25rem',
         }}
       >
         <h2 className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-display)' }}>
@@ -72,7 +74,11 @@ export default function PlanTrip({ profile, trips, editTrip = null, onAdd, onEdi
           className="rounded-2xl shadow-sm p-2 mb-4"
           style={{ background: 'var(--color-surface)' }}
         >
-          <CalendarPicker selected={range} onSelect={setRange} />
+          <CalendarPicker
+            selected={range}
+            onSelect={setRange}
+            defaultMonth={range?.from}
+          />
         </div>
 
         {/* Live preview — shown after range is selected */}
