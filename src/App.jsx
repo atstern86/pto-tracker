@@ -7,6 +7,7 @@ import Settings from './views/Settings'
 import PlanTrip from './views/PlanTrip'
 import BottomNav from './components/BottomNav'
 import InstallPrompt from './components/InstallPrompt'
+import UpdateModal from './components/UpdateModal'
 
 export default function App() {
   const [profile, setProfile] = useState(null)
@@ -15,11 +16,18 @@ export default function App() {
   const [showPlanTrip, setShowPlanTrip] = useState(false)
   const [editingTrip, setEditingTrip] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [waitingWorker, setWaitingWorker] = useState(null)
 
   useEffect(() => {
     setProfile(loadProfile())
     setTrips(loadTrips())
     setIsLoading(false)
+  }, [])
+
+  useEffect(() => {
+    const onUpdate = (e) => setWaitingWorker(e.detail)
+    window.addEventListener('sw-update', onUpdate)
+    return () => window.removeEventListener('sw-update', onUpdate)
   }, [])
 
   if (isLoading) return null
@@ -89,6 +97,13 @@ export default function App() {
       )}
 
       <InstallPrompt />
+
+      {waitingWorker && (
+        <UpdateModal onRefresh={() => {
+          waitingWorker.postMessage('SKIP_WAITING')
+          window.location.reload()
+        }} />
+      )}
     </div>
   )
 }

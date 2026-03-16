@@ -32,6 +32,21 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(console.error)
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      // Check for a waiting worker on page load
+      if (reg.waiting) {
+        window.dispatchEvent(new CustomEvent('sw-update', { detail: reg.waiting }))
+      }
+      // Detect when a new worker is installed and waiting
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing
+        if (!newWorker) return
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            window.dispatchEvent(new CustomEvent('sw-update', { detail: newWorker }))
+          }
+        })
+      })
+    }).catch(console.error)
   })
 }

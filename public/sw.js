@@ -1,7 +1,12 @@
 const CACHE_NAME = 'pto-tracker-v4'
 
-self.addEventListener('install', event => {
-  event.waitUntil(self.skipWaiting())
+self.addEventListener('install', () => {
+  // Don't auto-skip — wait for the page to tell us via postMessage
+  // so we can show a "new version available" prompt first
+})
+
+self.addEventListener('message', event => {
+  if (event.data === 'SKIP_WAITING') self.skipWaiting()
 })
 
 self.addEventListener('activate', event => {
