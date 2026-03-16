@@ -58,7 +58,6 @@ export default function InstallPrompt() {
         <span>Tap the <strong>Share</strong> button <ShareIcon size={14} color="var(--color-primary)" /> in the Safari toolbar</span>
       </div>
 
-      {/* Step 2 + mock share sheet */}
       <div
         className="flex items-center gap-2 text-sm rounded-xl p-3 mb-2"
         style={{
@@ -68,44 +67,31 @@ export default function InstallPrompt() {
         }}
       >
         <span>2️⃣</span>
-        <span>Scroll down in the menu and tap <strong>"Add to Home Screen"</strong></span>
+        <span>Scroll down and tap <strong>"Add to Home Screen"</strong> — highlighted below</span>
       </div>
 
-      {/* Mock iOS share sheet */}
-      <div
-        className="rounded-2xl overflow-hidden text-sm"
-        style={{
-          background: 'rgba(40,40,50,0.92)',
-          color: 'white',
-          fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-        }}
-      >
-        {['Add Bookmark to…', 'Add to Favorites', 'Add to Quick Note', 'Find on Page'].map(label => (
-          <div
-            key={label}
-            className="flex items-center gap-3 px-4 py-3"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}
-          >
-            <span style={{ fontSize: 18 }}>
-              {label === 'Add Bookmark to…' ? '📖' : label === 'Add to Favorites' ? '⭐' : label === 'Add to Quick Note' ? '🗒️' : '🔍'}
-            </span>
-            {label}
-          </div>
-        ))}
-        {/* Highlighted row */}
+      {/* Real iOS screenshot with highlight overlay */}
+      <div className="rounded-2xl overflow-hidden" style={{ position: 'relative' }}>
+        <img
+          src="/icons/screenshot share.jpg"
+          alt="iOS share sheet"
+          style={{ width: '100%', display: 'block' }}
+        />
+        {/* Purple highlight box over "Add to Home Screen" row */}
         <div
-          className="flex items-center gap-3 px-4 py-3 rounded-b-2xl"
           style={{
-            background: 'rgba(168,85,247,0.35)',
-            border: '2px solid #a855f7',
-            color: 'white',
-            fontWeight: 700,
+            position: 'absolute',
+            top: '89.5%',
+            bottom: '1%',
+            left: '2%',
+            right: '2%',
+            border: '3px solid #a855f7',
+            borderRadius: '10px',
+            background: 'rgba(168,85,247,0.25)',
+            boxShadow: '0 0 0 2px rgba(168,85,247,0.4)',
+            pointerEvents: 'none',
           }}
-        >
-          <span style={{ fontSize: 18 }}>➕</span>
-          Add to Home Screen
-          <span style={{ marginLeft: 'auto', fontSize: 16 }}>←</span>
-        </div>
+        />
       </div>
     </div>
   )

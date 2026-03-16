@@ -49,11 +49,10 @@ export default function Onboarding({ onComplete }) {
   const [schedule, setSchedule] = useState({ monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' })
   const [balance, setBalance] = useState('')
   const [balanceDate, setBalanceDate] = useState(format(new Date(), 'yyyy-MM-dd'))
-  const [payFrequency, setPayFrequency] = useState('')
-  const [anchorDate, setAnchorDate] = useState('')
-  const [accrualRate, setAccrualRate] = useState('')
 
   function validate(msg) { alert(msg) }
+
+  const totalSteps = employmentType === 'part-time' ? 4 : 3
 
   function handleStep1Next() {
     if (!name.trim()) return validate('Please enter your name.')
@@ -77,21 +76,6 @@ export default function Onboarding({ onComplete }) {
     const bal = parseFloat(balance)
     if (isNaN(bal) || bal < 0 || bal > 9999) return validate('Enter a valid balance between 0 and 9999 hours.')
     if (!balanceDate) return validate('Please enter the balance date.')
-    setStep(5)
-  }
-
-  function handleStep5Next() {
-    if (!payFrequency) return validate('Please select a pay period frequency.')
-    if (payFrequency === 'biweekly') {
-      if (!anchorDate) return validate('Please enter a recent pay date.')
-      if (anchorDate > format(new Date(), 'yyyy-MM-dd')) return validate('Anchor date must be today or in the past.')
-    }
-    setStep(6)
-  }
-
-  function handleStep6Next() {
-    const rate = parseFloat(accrualRate)
-    if (isNaN(rate) || rate <= 0 || rate > 99) return validate('Enter a valid accrual rate between 0.01 and 99 hours.')
 
     const normalizedSchedule = {}
     DAYS.forEach(d => { normalizedSchedule[d] = parseFloat(schedule[d]) || 0 })
@@ -100,17 +84,15 @@ export default function Onboarding({ onComplete }) {
       name: name.trim(),
       employmentType,
       schedule: employmentType === 'part-time' ? normalizedSchedule : {},
-      currentBalanceHours: parseFloat(balance),
+      currentBalanceHours: bal,
       balanceAsOfDate: balanceDate,
-      payPeriodFrequency: payFrequency,
-      payPeriodAnchorDate: payFrequency === 'biweekly' ? anchorDate : null,
-      accrualRateHours: rate,
+      payPeriodFrequency: 'biweekly',
+      payPeriodAnchorDate: balanceDate,
+      accrualRateHours: employmentType === 'full-time' ? 5.8 : 2.9,
     }
     saveProfile(profile)
     onComplete(profile)
   }
-
-  const totalSteps = employmentType === 'part-time' ? 6 : 5
 
   if (step === 1) return (
     <Step title="Welcome! 👋" subtitle="Let's get your PTO set up in about 2 minutes." onNext={handleStep1Next} step={1} total={totalSteps}>
@@ -151,35 +133,10 @@ export default function Onboarding({ onComplete }) {
     </Step>
   )
 
-  if (step === 4) return (
-    <Step title="Current PTO balance" subtitle="Check your most recent pay stub for hours available." onNext={handleStep4Next} onBack={() => setStep(employmentType === 'part-time' ? 3 : 2)} step={employmentType === 'part-time' ? 4 : 3} total={totalSteps}>
+  return (
+    <Step title="Current PTO balance" subtitle="Check your most recent pay stub for hours available." onNext={handleStep4Next} onBack={() => setStep(employmentType === 'part-time' ? 3 : 2)} nextLabel="Let's go! 🚀" step={totalSteps} total={totalSteps}>
       <Input label="Hours available (e.g. 93.75)" type="number" min="0" max="9999" step="0.01" placeholder="0" value={balance} onChange={e => setBalance(e.target.value)} />
       <Input label="As of this date" type="date" value={balanceDate} onChange={e => setBalanceDate(e.target.value)} />
-    </Step>
-  )
-
-  if (step === 5) return (
-    <Step title="Pay period" subtitle="How often do you get paid?" onNext={handleStep5Next} onBack={() => setStep(4)} step={employmentType === 'part-time' ? 5 : 4} total={totalSteps}>
-      {['biweekly', 'semi-monthly'].map(freq => (
-        <button
-          key={freq}
-          onClick={() => setPayFrequency(freq)}
-          className={`w-full text-left p-4 rounded-2xl mb-3 border-2 font-medium
-            ${payFrequency === freq ? 'bg-white text-[#6c3483] border-white' : 'bg-white/20 text-white border-white/30'}`}
-        >
-          {freq === 'biweekly' ? '📆 Every two weeks' : '📆 Twice a month (1st & 15th)'}
-        </button>
-      ))}
-      {payFrequency === 'biweekly' && (
-        <Input label="A recent pay date (any past pay date)" type="date" value={anchorDate} onChange={e => setAnchorDate(e.target.value)} />
-      )}
-    </Step>
-  )
-
-  return (
-    <Step title="Accrual rate" subtitle="How many PTO hours do you earn each pay period?" onNext={handleStep6Next} onBack={() => setStep(5)} nextLabel="Let's go! 🚀" step={totalSteps} total={totalSteps}>
-      <Input label="Hours per pay period (e.g. 3.75)" type="number" min="0.01" max="99" step="0.01" placeholder="3.75" value={accrualRate} onChange={e => setAccrualRate(e.target.value)} />
-      <p className="text-white/60 text-sm mt-2">You can always change this in Settings later.</p>
     </Step>
   )
 }
