@@ -45,30 +45,7 @@ export default function InstallPrompt() {
         Add to your home screen first — then set up your profile. Your data only saves inside the installed app, not in Safari.
       </p>
 
-      {/* Toolbar diagram */}
-      <div
-        className="rounded-xl p-3 mb-3 text-center text-xs"
-        style={{
-          background: 'var(--color-primary-light, #ede9fe)',
-          color: 'var(--color-muted)',
-          fontFamily: 'var(--font-body)',
-          lineHeight: '1.8',
-        }}
-      >
-        <div className="text-sm font-medium mb-1">Browser Toolbar</div>
-        <div
-          className="rounded-lg px-3 py-2 inline-flex items-center gap-3 text-sm font-medium mx-auto"
-          style={{ background: 'white', color: 'var(--color-text)' }}
-        >
-          <span>◀</span>
-          <span>▶</span>
-          <span style={{ flex: 1, textAlign: 'center' }}>pto-tracker.netlify.app</span>
-          <ShareIcon size={18} color="var(--color-primary)" />
-          <span>⋯</span>
-        </div>
-        <div className="mt-1">↑ tap the share icon</div>
-      </div>
-
+      {/* Step 1 */}
       <div
         className="flex items-center gap-2 text-sm rounded-xl p-3 mb-2"
         style={{
@@ -78,10 +55,12 @@ export default function InstallPrompt() {
         }}
       >
         <span>1️⃣</span>
-        <span>Tap the <strong>Share</strong> button <ShareIcon size={14} color="var(--color-primary)" /> at the bottom of Safari</span>
+        <span>Tap the <strong>Share</strong> button <ShareIcon size={14} color="var(--color-primary)" /> in the Safari toolbar</span>
       </div>
+
+      {/* Step 2 + mock share sheet */}
       <div
-        className="flex items-center gap-2 text-sm rounded-xl p-3"
+        className="flex items-center gap-2 text-sm rounded-xl p-3 mb-2"
         style={{
           background: 'var(--color-primary-light, #ede9fe)',
           color: 'var(--color-text)',
@@ -89,7 +68,44 @@ export default function InstallPrompt() {
         }}
       >
         <span>2️⃣</span>
-        <span>Scroll down and tap <strong>"Add to Home Screen"</strong></span>
+        <span>Scroll down in the menu and tap <strong>"Add to Home Screen"</strong></span>
+      </div>
+
+      {/* Mock iOS share sheet */}
+      <div
+        className="rounded-2xl overflow-hidden text-sm"
+        style={{
+          background: 'rgba(40,40,50,0.92)',
+          color: 'white',
+          fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+        }}
+      >
+        {['Add Bookmark to…', 'Add to Favorites', 'Add to Quick Note', 'Find on Page'].map(label => (
+          <div
+            key={label}
+            className="flex items-center gap-3 px-4 py-3"
+            style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}
+          >
+            <span style={{ fontSize: 18 }}>
+              {label === 'Add Bookmark to…' ? '📖' : label === 'Add to Favorites' ? '⭐' : label === 'Add to Quick Note' ? '🗒️' : '🔍'}
+            </span>
+            {label}
+          </div>
+        ))}
+        {/* Highlighted row */}
+        <div
+          className="flex items-center gap-3 px-4 py-3 rounded-b-2xl"
+          style={{
+            background: 'rgba(168,85,247,0.35)',
+            border: '2px solid #a855f7',
+            color: 'white',
+            fontWeight: 700,
+          }}
+        >
+          <span style={{ fontSize: 18 }}>➕</span>
+          Add to Home Screen
+          <span style={{ marginLeft: 'auto', fontSize: 16 }}>←</span>
+        </div>
       </div>
     </div>
   )
