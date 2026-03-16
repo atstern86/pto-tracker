@@ -13,6 +13,7 @@ export default function App() {
   const [trips, setTrips] = useState([])
   const [activeTab, setActiveTab] = useState('home')
   const [showPlanTrip, setShowPlanTrip] = useState(false)
+  const [editingTrip, setEditingTrip] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function App() {
             profile={profile}
             trips={trips}
             onPlanTrip={() => { setActiveTab('home'); setShowPlanTrip(true) }}
+            onEditTrip={(trip) => setEditingTrip(trip)}
           />
         )}
         {activeTab === 'settings' && (
@@ -63,15 +65,21 @@ export default function App() {
 
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {showPlanTrip && (
+      {(showPlanTrip || editingTrip) && (
         <PlanTrip
           profile={profile}
           trips={trips}
+          editTrip={editingTrip}
           onAdd={(newTrip) => {
             const updated = [...trips, newTrip].sort((a, b) => a.startDate.localeCompare(b.startDate))
             setTrips(updated)
           }}
-          onClose={() => setShowPlanTrip(false)}
+          onEdit={(updatedTrip) => {
+            const updated = trips.map(t => t.id === updatedTrip.id ? updatedTrip : t)
+              .sort((a, b) => a.startDate.localeCompare(b.startDate))
+            setTrips(updated)
+          }}
+          onClose={() => { setShowPlanTrip(false); setEditingTrip(null) }}
         />
       )}
 

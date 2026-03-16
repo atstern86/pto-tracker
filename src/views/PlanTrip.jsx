@@ -1,14 +1,21 @@
 import { useState, useMemo } from 'react'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { v4 as uuidv4 } from 'uuid'
 import CalendarPicker from '../components/CalendarPicker'
 import BalanceDisplay from '../components/BalanceDisplay'
 import { calculateTripCost, getProjectedBalance } from '../logic/calculations'
 import { saveTrips } from '../logic/storage'
 
-export default function PlanTrip({ profile, trips, onAdd, onClose }) {
-  const [range, setRange] = useState(undefined)
-  const [tripName, setTripName] = useState('')
+export default function PlanTrip({ profile, trips, editTrip = null, onAdd, onEdit, onClose }) {
+  const [range, setRange] = useState(editTrip ? {
+    from: parseISO(editTrip.startDate),
+    to: parseISO(editTrip.endDate),
+  } : undefined)
+  const [tripName, setTripName] = useState(editTrip?.name ?? '')
+  const isEditing = editTrip !== null
+
+  // Exclude the trip being edited from balance calculations so it doesn't double-count
+  const tripsForCalc = isEditing ? trips.filter(t => t.id !== editTrip.id) : trips
 
   const tripCost = useMemo(() => {
     if (!range?.from || !range?.to) return null
@@ -21,22 +28,24 @@ export default function PlanTrip({ profile, trips, onAdd, onClose }) {
 
   const balanceGoingIn = useMemo(() => {
     if (!range?.from) return null
-    return getProjectedBalance(format(range.from, 'yyyy-MM-dd'), profile, trips)
-  }, [range, profile, trips])
+    return getProjectedBalance(format(range.from, 'yyyy-MM-dd'), profile, tripsForCalc)
+  }, [range, profile, tripsForCalc])
 
   const isSufficient = tripCost !== null && balanceGoingIn !== null && balanceGoingIn >= tripCost
 
   function handleAdd() {
     if (!range?.from || !range?.to || tripCost === null) return
-    const newTrip = {
-      id: uuidv4(),
-      name: tripName.trim(),
-      startDate: format(range.from, 'yyyy-MM-dd'),
-      endDate: format(range.to, 'yyyy-MM-dd'),
+    if (isEditing) {
+      const updatedTrip = { ...editTrip, name: tripName.trim(), startDate: format(range.from, 'yyyy-MM-dd'), endDate: format(range.to, 'yyyy-MM-dd') }
+      const updated = trips.map(t => t.id === editTrip.id ? updatedTrip : t).sort((a, b) => a.startDate.localeCompare(b.startDate))
+      saveTrips(updated)
+      onEdit(updatedTrip)
+    } else {
+      const newTrip = { id: uuidv4(), name: tripName.trim(), startDate: format(range.from, 'yyyy-MM-dd'), endDate: format(range.to, 'yyyy-MM-dd') }
+      const updated = [...trips, newTrip].sort((a, b) => a.startDate.localeCompare(b.startDate))
+      saveTrips(updated)
+      onAdd(newTrip)
     }
-    const updated = [...trips, newTrip].sort((a, b) => a.startDate.localeCompare(b.startDate))
-    saveTrips(updated)
-    onAdd(newTrip)
     onClose()
   }
 
@@ -50,7 +59,7 @@ export default function PlanTrip({ profile, trips, onAdd, onClose }) {
         }}
       >
         <h2 className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-display)' }}>
-          Plan a Trip ✈️
+          {isEditing ? 'Edit Trip ✏️' : 'Plan a Trip ✈️'}
         </h2>
         <button onClick={onClose} className="text-white/70 text-sm font-medium px-3 py-2">
           ✕ Cancel
@@ -157,7 +166,7 @@ export default function PlanTrip({ profile, trips, onAdd, onClose }) {
             fontFamily: 'var(--font-body)',
           }}
         >
-          Add Trip
+          {isEditing ? 'Save Changes' : 'Add Trip'}
         </button>
       </div>
     </div>
