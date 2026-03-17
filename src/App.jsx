@@ -50,6 +50,7 @@ export default function App() {
             trips={trips}
             onPlanTrip={() => setShowPlanTrip(true)}
             onTripsChange={setTrips}
+            onEditTrip={(trip) => setEditingTrip(trip)}
           />
         )}
         {activeTab === 'timeline' && (

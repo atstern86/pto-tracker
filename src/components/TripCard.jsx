@@ -11,7 +11,7 @@ function getDestinationIcon(tripId) {
   return DESTINATION_ICONS[hash % DESTINATION_ICONS.length]
 }
 
-export default function TripCard({ trip, profile, allTrips, onDelete, index = 0 }) {
+export default function TripCard({ trip, profile, allTrips, onDelete, onEdit, index = 0 }) {
   const cost = calculateTripCost(trip.startDate, trip.endDate, profile)
   const balanceBefore = getProjectedBalance(trip.startDate, profile, allTrips)
   const balanceAfter = balanceBefore - cost
@@ -76,22 +76,26 @@ export default function TripCard({ trip, profile, allTrips, onDelete, index = 0 
               </div>
             </div>
 
-            <button
-              onClick={() => onDelete(trip.id)}
-              className="rounded-full w-10 h-10 flex items-center justify-center transition-colors"
-              style={{ color: 'var(--color-muted)' }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = '#fee2e2'
-                e.currentTarget.style.color = 'var(--color-danger)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'transparent'
-                e.currentTarget.style.color = 'var(--color-muted)'
-              }}
-              aria-label={`Delete ${tripName}`}
-            >
-              ✕
-            </button>
+            <div className="flex items-center gap-1">
+              {onEdit && (
+                <button
+                  onClick={() => onEdit({ id: trip.id, name: trip.name, startDate: trip.startDate, endDate: trip.endDate })}
+                  className="text-xs px-2 py-1 rounded-lg font-medium transition-colors"
+                  style={{ background: 'var(--color-primary-light, #ede9fe)', color: 'var(--color-primary)' }}
+                  aria-label={`Edit ${tripName}`}
+                >
+                  ✏️ Edit
+                </button>
+              )}
+              <button
+                onClick={() => onDelete(trip.id)}
+                className="text-xs px-2 py-1 rounded-lg font-medium transition-colors"
+                style={{ background: '#fff1f2', color: 'var(--color-danger)' }}
+                aria-label={`Delete ${tripName}`}
+              >
+                🗑️
+              </button>
+            </div>
           </div>
 
           {/* Balance row */}

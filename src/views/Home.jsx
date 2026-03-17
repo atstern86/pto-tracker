@@ -5,7 +5,7 @@ import { saveTrips } from '../logic/storage'
 import BalanceDisplay from '../components/BalanceDisplay'
 import TripCard from '../components/TripCard'
 
-export default function Home({ profile, trips, onPlanTrip, onTripsChange }) {
+export default function Home({ profile, trips, onPlanTrip, onTripsChange, onEditTrip }) {
   const today = format(new Date(), 'yyyy-MM-dd')
   const currentBalance = useMemo(
     () => getProjectedBalance(today, profile, trips),
@@ -140,6 +140,7 @@ export default function Home({ profile, trips, onPlanTrip, onTripsChange }) {
               profile={profile}
               allTrips={trips}
               onDelete={handleDelete}
+              onEdit={onEditTrip}
               index={i}
             />
           ))
