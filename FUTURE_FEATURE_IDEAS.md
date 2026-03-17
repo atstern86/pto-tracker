@@ -9,6 +9,7 @@ Ideas logged during development for future consideration. Do not build these in 
 - **Shared team calendar**: All 6 colleagues can see each other's planned time off as dots or highlights on the trip calendar picker. Requires a backend (Supabase) and login.
 - **Outlook/Google Calendar integration**: Import approved PTO from calendar to auto-populate trips. Show teammates' approved PTO on the date picker.
 - **Cloud sync / data backup**: Sync localStorage data to the cloud so it survives phone replacement or browser clear.
+- **Cross-device sync**: Move full profile + trips to Supabase as source of truth so signing in with Google on a new device brings everything over automatically.
 
 ## V2 — Profile Enhancements
 - Support for non-Mon–Fri schedules (e.g. Tue–Sat hospital shift patterns)

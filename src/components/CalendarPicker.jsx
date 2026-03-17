@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { FEDERAL_HOLIDAYS } from '../logic/holidays'
@@ -7,22 +8,93 @@ import { parseISO } from 'date-fns'
 const holidayDates = FEDERAL_HOLIDAYS.map(d => parseISO(d))
 const holidaySet = new Set(FEDERAL_HOLIDAYS)
 
-function DayContent({ date }) {
-  const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-  const isHoliday = holidaySet.has(iso)
-  return (
-    <div className="flex flex-col items-center leading-none">
-      <span>{date.getDate()}</span>
-      {isHoliday && (
-        <span style={{ fontSize: '7px', color: '#10b981', lineHeight: 1.2, marginTop: '1px' }}>
-          free 🎉
-        </span>
-      )}
-    </div>
-  )
+// Consistent color palette for colleague dots
+const DOT_COLORS = ['#f59e0b', '#3b82f6', '#ef4444', '#10b981', '#8b5cf6', '#ec4899']
+
+function hashName(name) {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) {
+    hash = ((hash << 5) - hash) + name.charCodeAt(i)
+    hash |= 0
+  }
+  return Math.abs(hash)
 }
 
-export default function CalendarPicker({ selected, onSelect, defaultMonth }) {
+function getColorForName(name) {
+  return DOT_COLORS[hashName(name) % DOT_COLORS.length]
+}
+
+/**
+ * Build a lookup: ISO date string -> array of colleague names out that day.
+ * Only includes dates within a reasonable window to avoid huge maps.
+ */
+function buildAbsenceMap(colleagueAbsences) {
+  const map = new Map()
+  if (!colleagueAbsences?.length) return map
+
+  for (const absence of colleagueAbsences) {
+    const start = parseISO(absence.startDate)
+    const end = parseISO(absence.endDate)
+    const current = new Date(start)
+    // Walk each day in the range
+    while (current <= end) {
+      const iso = `${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, '0')}-${String(current.getDate()).padStart(2, '0')}`
+      if (!map.has(iso)) map.set(iso, [])
+      const names = map.get(iso)
+      if (!names.includes(absence.displayName)) {
+        names.push(absence.displayName)
+      }
+      current.setDate(current.getDate() + 1)
+    }
+  }
+  return map
+}
+
+export default function CalendarPicker({ selected, onSelect, defaultMonth, colleagueAbsences }) {
+  const absenceMap = useMemo(() => buildAbsenceMap(colleagueAbsences), [colleagueAbsences])
+
+  // Collect all unique colleague names that have any absences (for legend)
+  const colleagueNames = useMemo(() => {
+    const names = new Set()
+    if (colleagueAbsences?.length) {
+      for (const a of colleagueAbsences) names.add(a.displayName)
+    }
+    return [...names].sort()
+  }, [colleagueAbsences])
+
+  function DayContent({ date }) {
+    const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    const isHoliday = holidaySet.has(iso)
+    const colleaguesOut = absenceMap.get(iso) || []
+
+    return (
+      <div className="flex flex-col items-center leading-none">
+        <span>{date.getDate()}</span>
+        {isHoliday && (
+          <span style={{ fontSize: '7px', color: '#10b981', lineHeight: 1.2, marginTop: '1px' }}>
+            free 🎉
+          </span>
+        )}
+        {colleaguesOut.length > 0 && (
+          <div className="flex gap-0.5 mt-0.5">
+            {colleaguesOut.map(name => (
+              <span
+                key={name}
+                style={{
+                  width: '5px',
+                  height: '5px',
+                  borderRadius: '50%',
+                  backgroundColor: getColorForName(name),
+                  display: 'inline-block',
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="rdp-custom">
       <DayPicker
@@ -40,6 +112,29 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth }) {
         }}
         components={{ DayContent }}
       />
+
+      {/* Colleague legend */}
+      {colleagueNames.length > 0 && (
+        <div className="flex flex-wrap gap-3 px-2 pt-2 pb-1">
+          {colleagueNames.map(name => (
+            <div key={name} className="flex items-center gap-1.5">
+              <span
+                style={{
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  backgroundColor: getColorForName(name),
+                  display: 'inline-block',
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ fontSize: '11px', color: 'var(--color-muted)' }}>
+                {name}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

@@ -6,7 +6,7 @@ import BalanceDisplay from '../components/BalanceDisplay'
 import { calculateTripCost, getProjectedBalance } from '../logic/calculations'
 import { saveTrips } from '../logic/storage'
 
-export default function PlanTrip({ profile, trips, editTrip = null, onAdd, onEdit, onClose }) {
+export default function PlanTrip({ profile, trips, editTrip = null, onAdd, onEdit, onClose, colleagueAbsences }) {
   const [range, setRange] = useState(editTrip ? {
     from: parseISO(editTrip.startDate),
     to: parseISO(editTrip.endDate),
@@ -78,6 +78,7 @@ export default function PlanTrip({ profile, trips, editTrip = null, onAdd, onEdi
             selected={range}
             onSelect={setRange}
             defaultMonth={range?.from}
+            colleagueAbsences={colleagueAbsences}
           />
         </div>
 

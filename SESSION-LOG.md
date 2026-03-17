@@ -2,6 +2,23 @@
 
 ---
 
+## 2026-03-17 — Home Page Edit/Delete Buttons
+
+**What happened:** Added edit and delete buttons to trip cards on the home page, matching the timeline's UI.
+
+**What was built/fixed:**
+- TripCard component now shows `✏️ Edit` (purple) and `🗑️` (red) buttons instead of the old plain `✕`
+- Edit button opens the PlanTrip overlay in edit mode (same flow as timeline)
+- Wired through Home → App via `onEditTrip` prop
+
+**What's next:**
+- Deploy to Netlify
+- Replace placeholder icons
+- Test on iPhone
+- Get HR details from Gaby (accrual rates, anchor date)
+
+---
+
 ## 2026-03-15 — Timeline Collapsible Groups + Pay Stub Review
 
 **What happened:** Reviewed the app locally, clarified onboarding pay period question using Gaby's actual pay stub, and improved the Timeline view.

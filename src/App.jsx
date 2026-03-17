@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { loadProfile, loadTrips, saveTrips } from './logic/storage'
+import useSupabase from './hooks/useSupabase'
 import Onboarding from './views/Onboarding'
 import Home from './views/Home'
 import Timeline from './views/Timeline'
@@ -17,6 +18,8 @@ export default function App() {
   const [editingTrip, setEditingTrip] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [waitingWorker, setWaitingWorker] = useState(null)
+
+  const { user, colleagueAbsences, signIn, signOut } = useSupabase(trips)
 
   useEffect(() => {
     setProfile(loadProfile())
@@ -51,6 +54,8 @@ export default function App() {
             onPlanTrip={() => setShowPlanTrip(true)}
             onTripsChange={setTrips}
             onEditTrip={(trip) => setEditingTrip(trip)}
+            user={user}
+            signIn={signIn}
           />
         )}
         {activeTab === 'timeline' && (
@@ -73,6 +78,9 @@ export default function App() {
             onProfileChange={setProfile}
             onTripsChange={setTrips}
             onReset={() => { setProfile(null); setTrips([]) }}
+            user={user}
+            signIn={signIn}
+            signOut={signOut}
           />
         )}
       </div>
@@ -84,6 +92,7 @@ export default function App() {
           profile={profile}
           trips={trips}
           editTrip={editingTrip}
+          colleagueAbsences={colleagueAbsences}
           onAdd={(newTrip) => {
             const updated = [...trips, newTrip].sort((a, b) => a.startDate.localeCompare(b.startDate))
             setTrips(updated)

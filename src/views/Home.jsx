@@ -4,8 +4,9 @@ import { getProjectedBalance } from '../logic/calculations'
 import { saveTrips } from '../logic/storage'
 import BalanceDisplay from '../components/BalanceDisplay'
 import TripCard from '../components/TripCard'
+import AuthPrompt from '../components/AuthPrompt'
 
-export default function Home({ profile, trips, onPlanTrip, onTripsChange, onEditTrip }) {
+export default function Home({ profile, trips, onPlanTrip, onTripsChange, onEditTrip, user, signIn }) {
   const today = format(new Date(), 'yyyy-MM-dd')
   const currentBalance = useMemo(
     () => getProjectedBalance(today, profile, trips),
@@ -118,8 +119,13 @@ export default function Home({ profile, trips, onPlanTrip, onTripsChange, onEdit
         </button>
       </div>
 
+      {/* ── Connect with colleagues ── */}
+      <div className="px-6 mt-5">
+        <AuthPrompt user={user} signIn={signIn} />
+      </div>
+
       {/* ── Upcoming trips ── */}
-      <div className="px-6 mt-7">
+      <div className="px-6 mt-2">
         <h2
           className="text-xs font-semibold uppercase tracking-widest mb-4"
           style={{

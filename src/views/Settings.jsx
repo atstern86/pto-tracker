@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
 import { saveProfile, saveTrips, clearAll } from '../logic/storage'
+import AuthPrompt from '../components/AuthPrompt'
 
 const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 const DAY_LABELS = { monday: 'Mon', tuesday: 'Tue', wednesday: 'Wed', thursday: 'Thu', friday: 'Fri' }
@@ -39,7 +40,7 @@ function TextInput({ value, onChange, ...props }) {
 
 const today = format(new Date(), 'yyyy-MM-dd')
 
-export default function Settings({ profile, trips, onProfileChange, onTripsChange, onReset }) {
+export default function Settings({ profile, trips, onProfileChange, onTripsChange, onReset, user, signIn, signOut }) {
   const [form, setForm] = useState({ ...profile, schedule: { ...profile.schedule } })
   const [saved, setSaved] = useState(false)
   const [savedBalanceDate, setSavedBalanceDate] = useState(null)
@@ -284,6 +285,51 @@ export default function Settings({ profile, trips, onProfileChange, onTripsChang
         >
           {saved ? '✓ Saved!' : 'Save Changes'}
         </button>
+      </div>
+
+      {/* Account section */}
+      <div
+        className="rounded-2xl shadow-sm p-5 mb-4"
+        style={{ background: 'var(--color-surface)' }}
+      >
+        <h2
+          className="font-semibold mb-3"
+          style={{ color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}
+        >
+          Colleague Visibility
+        </h2>
+        {user ? (
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span
+                style={{
+                  width: '8px', height: '8px', borderRadius: '50%',
+                  backgroundColor: '#10b981', flexShrink: 0,
+                }}
+              />
+              <span className="text-sm" style={{ color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}>
+                Connected as {user.email}
+              </span>
+            </div>
+            <p className="text-sm mb-3" style={{ color: 'var(--color-muted)' }}>
+              Your colleagues can see when you're off (dates only — no trip names or balances).
+            </p>
+            <button
+              onClick={signOut}
+              className="text-sm font-medium px-4 py-2.5 rounded-xl transition-all active:scale-95"
+              style={{
+                border: '1.5px solid var(--color-card-border)',
+                color: 'var(--color-muted)',
+                background: 'transparent',
+                fontFamily: 'var(--font-body)',
+              }}
+            >
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          <AuthPrompt user={user} signIn={signIn} />
+        )}
       </div>
 
       {/* Trips section */}

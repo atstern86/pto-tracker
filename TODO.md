@@ -2,6 +2,8 @@
 
 ## Up Next
 
+- [ ] **Calendar: restrict to future dates only** — don't allow selecting past dates when planning a trip
+- [ ] **Customize Supabase email templates** — update subject + body for "Confirm signup" and "Magic link" templates to show PTO Tracker branding (done in Supabase dashboard → Auth → Email Templates)
 - [ ] **Deploy to Netlify** — push to GitHub, connect to Netlify, share URL with Gaby
 - [ ] **Replace placeholder icons** — create proper 192×192 and 512×512 purple plane icons in `public/icons/`
 - [ ] **Test on iPhone** — run through the verification checklist in the design spec (11 scenarios)
@@ -27,3 +29,4 @@ See FUTURE_FEATURE_IDEAS.md
 - [x] Settings screen (full profile edit, validation, trip management)
 - [x] PWA manifest + service worker + iOS install prompt
 - [x] netlify.toml deployment config
+- [x] Home page trip cards — edit/delete buttons (matching timeline UI)
