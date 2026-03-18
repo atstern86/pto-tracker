@@ -2,6 +2,65 @@
 
 ---
 
+## 2026-03-17 — Deployment + Google OAuth Fixes (Session 2)
+
+**What happened:**
+- Switched from magic link auth to Google OAuth (Supabase email rate limit was 2/hr on free tier)
+- Set up Google Cloud OAuth app (PTOtracker), published to production so app name shows
+- Updated AuthPrompt: replaced email input with "Sign in with Google" button
+- Changed connected state from permanent badge to 3-second dismissible success toast
+- Deployed to Netlify — hit credit limit (20 deploys × 15 credits = 300, the free tier cap); upgraded Netlify plan
+- Fixed Supabase Site URL + redirect URLs for production domain (was redirecting to localhost)
+- Fixed service worker caching old app on desktop Chrome (unregister + hard refresh)
+- Confirmed end-to-end two-user flow works: colleague dots appear on calendar for March 26–28
+- PWA users need to delete + re-add app to get latest version (localStorage data is preserved)
+- Added deployment checklist to global CLAUDE.md and memory: always call out env vars, auth URLs, OAuth redirect URIs after any deploy
+- Added "Migrate Netlify → Railway" to TODO
+- Logged cross-device sync as V2 idea in FUTURE_FEATURE_IDEAS.md
+
+**What changed:**
+- src/hooks/useSupabase.js — switched signIn to Google OAuth
+- src/components/AuthPrompt.jsx — Google button, temporary success toast
+- Global ~/.claude/CLAUDE.md — added deployment dependency guardrail
+- Memory — added feedback_deployment_checklist.md
+
+**What's next:**
+- Tell colleagues to reinstall PWA (delete + re-add from Safari)
+- Calendar: restrict to future dates only
+- Deploy to Railway (migrate off Netlify)
+- Replace placeholder icons
+- Test on iPhone (full checklist)
+
+---
+
+## 2026-03-17 — Colleague Vacation Visibility (Google OAuth + Supabase)
+
+**What happened:**
+- Brainstormed and designed colleague visibility feature — colleagues see colored dots on the calendar when others have time off
+- Set up Supabase backend: profiles + shared_absences tables with RLS, Realtime enabled
+- Built full sync layer: supabase.js client, supabaseSync.js (sync/fetch/migrate), useSupabase.js hook
+- Added AuthPrompt component, CalendarPicker colleague dots + legend, Settings account section
+- Fixed infinite Realtime loop bug (filtered subscription to other users only, added debounce + serialized trips comparison)
+- Hit Supabase built-in email rate limit (2/hour) during testing — explored Resend SMTP as fix
+- Switched from magic link auth to Google OAuth — much better UX, no email rate limits
+- Set up Google Cloud OAuth app (PTOtracker), enabled in Supabase, updated UI to "Sign in with Google" button
+- AuthPrompt now shows temporary success toast on sign-in instead of permanent badge
+- Tested two-user flow end-to-end — working
+
+**What changed:**
+- New files: supabase.js, supabaseSync.js, useSupabase.js, AuthPrompt.jsx, .env, .env.example
+- Modified: App.jsx, CalendarPicker.jsx, Home.jsx, PlanTrip.jsx, Settings.jsx, storage.js, .gitignore
+- Supabase project configured: DB schema, RLS, Realtime, Google OAuth provider
+- Google Cloud OAuth app created and published to production
+
+**What's next:**
+- Calendar: restrict to future dates only
+- Deploy to Netlify (set Supabase env vars in dashboard)
+- Replace placeholder icons
+- Test on iPhone
+
+---
+
 ## 2026-03-17 — Home Page Edit/Delete Buttons
 
 **What happened:** Added edit and delete buttons to trip cards on the home page, matching the timeline's UI.

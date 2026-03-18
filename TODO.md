@@ -3,11 +3,13 @@
 ## Up Next
 
 - [ ] **Calendar: restrict to future dates only** — don't allow selecting past dates when planning a trip
-- [ ] **Customize Supabase email templates** — update subject + body for "Confirm signup" and "Magic link" templates to show PTO Tracker branding (done in Supabase dashboard → Auth → Email Templates)
-- [ ] **Deploy to Netlify** — push to GitHub, connect to Netlify, share URL with Gaby
+- [ ] **Share with Gaby** — tell colleagues to reinstall PWA (delete + re-add from Safari), data is preserved
 - [ ] **Replace placeholder icons** — create proper 192×192 and 512×512 purple plane icons in `public/icons/`
 - [ ] **Test on iPhone** — run through the verification checklist in the design spec (11 scenarios)
 - [ ] **Get HR details from Gaby** — actual accrual rates, pay period frequency, anchor date (see OPEN_QUESTIONS.md)
+
+## Infra
+- [ ] **Migrate hosting from Netlify to Railway** — already on Railway for another app, avoid Netlify credit limits
 
 ## Future (V2)
 
@@ -30,3 +32,4 @@ See FUTURE_FEATURE_IDEAS.md
 - [x] PWA manifest + service worker + iOS install prompt
 - [x] netlify.toml deployment config
 - [x] Home page trip cards — edit/delete buttons (matching timeline UI)
+- [x] Colleague vacation visibility — Supabase backend, Google OAuth, calendar dots, realtime sync

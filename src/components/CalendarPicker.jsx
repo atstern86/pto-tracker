@@ -24,6 +24,23 @@ function getColorForName(name) {
   return DOT_COLORS[hashName(name) % DOT_COLORS.length]
 }
 
+const USER_DOT_COLOR = '#7c3aed'
+
+function buildUserTripSet(trips) {
+  const set = new Set()
+  if (!trips?.length) return set
+  for (const trip of trips) {
+    const start = parseISO(trip.startDate)
+    const end = parseISO(trip.endDate)
+    const current = new Date(start)
+    while (current <= end) {
+      set.add(`${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, '0')}-${String(current.getDate()).padStart(2, '0')}`)
+      current.setDate(current.getDate() + 1)
+    }
+  }
+  return set
+}
+
 /**
  * Build a lookup: ISO date string -> array of colleague names out that day.
  * Only includes dates within a reasonable window to avoid huge maps.
@@ -50,8 +67,9 @@ function buildAbsenceMap(colleagueAbsences) {
   return map
 }
 
-export default function CalendarPicker({ selected, onSelect, defaultMonth, colleagueAbsences }) {
+export default function CalendarPicker({ selected, onSelect, defaultMonth, colleagueAbsences, trips }) {
   const absenceMap = useMemo(() => buildAbsenceMap(colleagueAbsences), [colleagueAbsences])
+  const userTripSet = useMemo(() => buildUserTripSet(trips), [trips])
 
   // Collect all unique colleague names that have any absences (for legend)
   const colleagueNames = useMemo(() => {
@@ -66,6 +84,7 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth, colle
     const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
     const isHoliday = holidaySet.has(iso)
     const colleaguesOut = absenceMap.get(iso) || []
+    const isMyTrip = userTripSet.has(iso)
 
     return (
       <div className="flex flex-col items-center leading-none">
@@ -75,8 +94,19 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth, colle
             free 🎉
           </span>
         )}
-        {colleaguesOut.length > 0 && (
+        {(isMyTrip || colleaguesOut.length > 0) && (
           <div className="flex gap-0.5 mt-0.5">
+            {isMyTrip && (
+              <span
+                style={{
+                  width: '5px',
+                  height: '5px',
+                  borderRadius: '50%',
+                  backgroundColor: USER_DOT_COLOR,
+                  display: 'inline-block',
+                }}
+              />
+            )}
             {colleaguesOut.map(name => (
               <span
                 key={name}
@@ -113,9 +143,24 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth, colle
         components={{ DayContent }}
       />
 
-      {/* Colleague legend */}
-      {colleagueNames.length > 0 && (
+      {/* Legend */}
+      {(userTripSet.size > 0 || colleagueNames.length > 0) && (
         <div className="flex flex-wrap gap-3 px-2 pt-2 pb-1">
+          {userTripSet.size > 0 && (
+            <div className="flex items-center gap-1.5">
+              <span
+                style={{
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  backgroundColor: USER_DOT_COLOR,
+                  display: 'inline-block',
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ fontSize: '11px', color: 'var(--color-muted)' }}>You</span>
+            </div>
+          )}
           {colleagueNames.map(name => (
             <div key={name} className="flex items-center gap-1.5">
               <span

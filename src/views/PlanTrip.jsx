@@ -79,6 +79,7 @@ export default function PlanTrip({ profile, trips, editTrip = null, onAdd, onEdi
             onSelect={setRange}
             defaultMonth={range?.from}
             colleagueAbsences={colleagueAbsences}
+            trips={tripsForCalc}
           />
         </div>
 
