@@ -8,21 +8,8 @@ import { parseISO } from 'date-fns'
 const holidayDates = FEDERAL_HOLIDAYS.map(d => parseISO(d))
 const holidaySet = new Set(FEDERAL_HOLIDAYS)
 
-// Consistent color palette for colleague dots
-const DOT_COLORS = ['#f59e0b', '#3b82f6', '#ef4444', '#10b981', '#8b5cf6', '#ec4899']
-
-function hashName(name) {
-  let hash = 0
-  for (let i = 0; i < name.length; i++) {
-    hash = ((hash << 5) - hash) + name.charCodeAt(i)
-    hash |= 0
-  }
-  return Math.abs(hash)
-}
-
-function getColorForName(name) {
-  return DOT_COLORS[hashName(name) % DOT_COLORS.length]
-}
+// Distinct colors for colleague dots — none close to the user's purple (#7c3aed)
+const DOT_COLORS = ['#f59e0b', '#3b82f6', '#ef4444', '#10b981', '#ec4899', '#f97316', '#06b6d4']
 
 const USER_DOT_COLOR = '#7c3aed'
 
@@ -71,7 +58,7 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth, colle
   const absenceMap = useMemo(() => buildAbsenceMap(colleagueAbsences), [colleagueAbsences])
   const userTripSet = useMemo(() => buildUserTripSet(trips), [trips])
 
-  // Collect all unique colleague names that have any absences (for legend)
+  // Collect all unique colleague names, sorted — index determines color (guaranteed unique)
   const colleagueNames = useMemo(() => {
     const names = new Set()
     if (colleagueAbsences?.length) {
@@ -79,6 +66,12 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth, colle
     }
     return [...names].sort()
   }, [colleagueAbsences])
+
+  const nameToColor = useMemo(() => {
+    const map = {}
+    colleagueNames.forEach((name, i) => { map[name] = DOT_COLORS[i % DOT_COLORS.length] })
+    return map
+  }, [colleagueNames])
 
   function DayContent({ date }) {
     const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
@@ -114,7 +107,7 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth, colle
                   width: '5px',
                   height: '5px',
                   borderRadius: '50%',
-                  backgroundColor: getColorForName(name),
+                  backgroundColor: nameToColor[name],
                   display: 'inline-block',
                 }}
               />
@@ -168,7 +161,7 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth, colle
                   width: '7px',
                   height: '7px',
                   borderRadius: '50%',
-                  backgroundColor: getColorForName(name),
+                  backgroundColor: nameToColor[name],
                   display: 'inline-block',
                   flexShrink: 0,
                 }}
