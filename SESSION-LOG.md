@@ -2,20 +2,20 @@
 
 ---
 
-## 2026-03-18 — Calendar Self-Dots + Unique Colleague Colors
+## 2026-03-18 — Calendar Self-Dots, Unique Colleague Colors, Sync Delete Bug Fix
 
 **What happened:**
-- Added user's own trips as purple dots on the CalendarPicker — when planning a trip, you now see your existing trips on the calendar without leaving the screen
-- When editing a trip, the trip being edited is excluded from the dots (uses `tripsForCalc`) so it doesn't confuse the date selection
-- Fixed colleague dot colors: replaced hash-based color assignment (caused collisions) with index-based assignment — each colleague is guaranteed a unique color
-- Expanded and cleaned up the palette (7 colors, removed violet that clashed with user's purple)
-- Added "You" entry to the calendar legend, always shown first
+- Added user's own trips as purple dots on the CalendarPicker
+- Fixed colleague dot colors: index-based assignment guarantees uniqueness (was hash-based, caused collisions)
+- Fixed bug: trip deletions were silently dropped if a sync was already in progress — `syncingRef` guard was updating `prevTripsRef` before bailing, so the deletion was never retried. Removed the guard; sync logic is idempotent so concurrent syncs are safe.
 
 **What changed:**
 - src/components/CalendarPicker.jsx — self-trip dots, index-based color assignment, updated legend
 - src/views/PlanTrip.jsx — passes `tripsForCalc` as `trips` prop to CalendarPicker
+- src/hooks/useSupabase.js — removed `syncingRef` guard that was silently dropping deletions
 
 **What's next:**
+- Alex MP should delete and re-add the stuck trip once they get the update prompt
 - Restrict calendar to future dates only
 - Replace placeholder icons
 - Test on iPhone (full checklist)
