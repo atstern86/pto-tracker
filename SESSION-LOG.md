@@ -2,6 +2,27 @@
 
 ---
 
+## 2026-03-18 — Calendar Self-Dots + Unique Colleague Colors
+
+**What happened:**
+- Added user's own trips as purple dots on the CalendarPicker — when planning a trip, you now see your existing trips on the calendar without leaving the screen
+- When editing a trip, the trip being edited is excluded from the dots (uses `tripsForCalc`) so it doesn't confuse the date selection
+- Fixed colleague dot colors: replaced hash-based color assignment (caused collisions) with index-based assignment — each colleague is guaranteed a unique color
+- Expanded and cleaned up the palette (7 colors, removed violet that clashed with user's purple)
+- Added "You" entry to the calendar legend, always shown first
+
+**What changed:**
+- src/components/CalendarPicker.jsx — self-trip dots, index-based color assignment, updated legend
+- src/views/PlanTrip.jsx — passes `tripsForCalc` as `trips` prop to CalendarPicker
+
+**What's next:**
+- Restrict calendar to future dates only
+- Replace placeholder icons
+- Test on iPhone (full checklist)
+- Get actual accrual rates + pay period details from Gaby
+
+---
+
 ## 2026-03-17 — Deployment + Google OAuth Fixes (Session 2)
 
 **What happened:**

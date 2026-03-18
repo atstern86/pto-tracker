@@ -17,6 +17,8 @@ See FUTURE_FEATURE_IDEAS.md
 
 ## Done
 
+- [x] Calendar: show user's own trips as dots on CalendarPicker
+- [x] Fix colleague dot colors — index-based assignment guarantees uniqueness
 - [x] Timeline collapsible accrual groups (tap to expand/collapse, with clear affordance)
 - [x] Scaffold Vite + React + Tailwind + Vitest
 - [x] Project docs (CLAUDE.md, OPEN_QUESTIONS.md, FUTURE_FEATURE_IDEAS.md)
