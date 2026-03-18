@@ -126,6 +126,7 @@ export default function CalendarPicker({ selected, onSelect, defaultMonth, colle
         onSelect={onSelect}
         defaultMonth={defaultMonth ?? (selected?.from ?? new Date())}
         numberOfMonths={1}
+        disabled={{ before: new Date() }}
         modifiers={{ holiday: holidayDates }}
         modifiersStyles={{
           holiday: { color: '#10b981', fontWeight: 'bold' },
