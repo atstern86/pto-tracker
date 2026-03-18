@@ -15,7 +15,6 @@ export default function useSupabase(trips) {
   const [colleagueAbsences, setColleagueAbsences] = useState([])
   const [isOnline, setIsOnline] = useState(navigator.onLine)
   const subscriptionRef = useRef(null)
-  const syncingRef = useRef(false)
   const prevTripsRef = useRef(null)
   const debounceRef = useRef(null)
 
@@ -111,13 +110,7 @@ export default function useSupabase(trips) {
     if (prevTripsRef.current === tripsJson) return
     prevTripsRef.current = tripsJson
 
-    // Don't overlap sync calls
-    if (syncingRef.current) return
-    syncingRef.current = true
-
-    syncTripsToSupabase(trips, user.id).finally(() => {
-      syncingRef.current = false
-    })
+    syncTripsToSupabase(trips, user.id)
   }, [trips, user, isOnline])
 
   // Sign in with Google OAuth
